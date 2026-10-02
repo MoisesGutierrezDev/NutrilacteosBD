@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -20,8 +21,16 @@ public class MainView extends BorderPane {
     private Button btnProductos;
     private TableView<Producto> tablaProductos;
 
+    // --- NUEVOS CONTROLES PARA EL REGISTRO ---
+    private TextField txtNombre;
+    private TextField txtCategoria;
+    private TextField txtPrecio;
+    private TextField txtStock;
+    private Button btnRegistrar;
+
     public MainView() {
         crearMenu();
+        crearFormulario(); // Inicializa los campos de texto
         crearTabla();
         mostrarInicio();
     }
@@ -50,6 +59,23 @@ public class MainView extends BorderPane {
         return boton;
     }
 
+    // --- MÉTODOS Y CONTROLES DEL FORMULARIO DE REGISTRO ---
+    private void crearFormulario() {
+        txtNombre = new TextField();
+        txtNombre.setPromptText("Nombre del producto");
+
+        txtCategoria = new TextField();
+        txtCategoria.setPromptText("Categoría");
+
+        txtPrecio = new TextField();
+        txtPrecio.setPromptText("Precio");
+
+        txtStock = new TextField();
+        txtStock.setPromptText("Stock");
+
+        btnRegistrar = new Button("Registrar");
+    }
+
     public void mostrarInicio() {
         VBox contenido = new VBox(10);
         contenido.setAlignment(Pos.CENTER);
@@ -64,13 +90,23 @@ public class MainView extends BorderPane {
     }
 
     public void mostrarProductos() {
-        VBox contenido = new VBox(20);
+        VBox contenido = new VBox(15);
         contenido.setPadding(new Insets(30));
 
         Label titulo = new Label("PRODUCTOS");
         titulo.setStyle("-fx-font-size: 26px; -fx-font-weight: bold;");
 
-        contenido.getChildren().addAll(titulo, tablaProductos);
+        // Agregamos el título, los 4 campos, el botón y la tabla en orden vertical
+        contenido.getChildren().addAll(
+                titulo,
+                txtNombre,
+                txtCategoria,
+                txtPrecio,
+                txtStock,
+                btnRegistrar,
+                tablaProductos
+        );
+
         setCenter(contenido);
     }
 
@@ -96,6 +132,20 @@ public class MainView extends BorderPane {
         tablaProductos.setItems(FXCollections.observableArrayList(productos));
     }
 
+    // --- MÉTODO PARA LIMPIAR LOS CAMPOS TRAS REGISTRAR ---
+    public void limpiarCampos() {
+        txtNombre.clear();
+        txtCategoria.clear();
+        txtPrecio.clear();
+        txtStock.clear();
+    }
+
+    // --- GETTERS DE LOS CONTROLES Y BOTONES ---
     public Button getBtnInicio() { return btnInicio; }
     public Button getBtnProductos() { return btnProductos; }
+    public TextField getTxtNombre() { return txtNombre; }
+    public TextField getTxtCategoria() { return txtCategoria; }
+    public TextField getTxtPrecio() { return txtPrecio; }
+    public TextField getTxtStock() { return txtStock; }
+    public Button getBtnRegistrar() { return btnRegistrar; }
 }

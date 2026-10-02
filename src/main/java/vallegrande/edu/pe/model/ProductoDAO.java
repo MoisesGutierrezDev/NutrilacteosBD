@@ -1,6 +1,7 @@
 package vallegrande.edu.pe.model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -32,5 +33,27 @@ public class ProductoDAO {
         }
 
         return lista;
+    }
+
+    // Método nuevo para insertar un producto
+    public boolean registrar(Producto p) {
+        String sql = "INSERT INTO producto (nombre, categoria, precio, stock) VALUES (?, ?, ?, ?)";
+
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getCategoria());
+            ps.setDouble(3, p.getPrecio());
+            ps.setInt(4, p.getStock());
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (Exception e) {
+            System.err.println("--- ERROR AL REGISTRAR PRODUCTO EN NUTRILÁCTEOS ---");
+            e.printStackTrace();
+            return false;
+        }
     }
 }
